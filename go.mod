@@ -1,4 +1,4 @@
-module github.com/lishimeng/go-persistence
+module github.com/lishimeng/go-orm
 
 go 1.14
 
