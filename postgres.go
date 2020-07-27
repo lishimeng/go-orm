@@ -15,11 +15,16 @@ type PostgresConfig struct {
 	DbName     string
 	MaxIdle    int
 	MaxConn    int
+	SSL        bool
 }
 
 func (c *PostgresConfig) Build() (b BaseConfig) {
 
-	dataSource := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%d sslmode=disable", c.UserName, c.Password, c.DbName, c.Host, c.Port)
+	ssl := "disable"
+	if c.SSL {
+		ssl = "enable"
+	}
+	dataSource := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%d sslmode=%s", c.UserName, c.Password, c.DbName, c.Host, c.Port, ssl)
 	b = BaseConfig{
 		dataSource: dataSource,
 		aliasName: c.AliasName,
