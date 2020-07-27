@@ -15,14 +15,14 @@ type PostgresConfig struct {
 	DbName     string
 	MaxIdle    int
 	MaxConn    int
-	SSL        bool
+	SSL        string
 }
 
 func (c *PostgresConfig) Build() (b BaseConfig) {
 
 	ssl := "disable"
-	if c.SSL {
-		ssl = "enable"
+	if len(c.SSL) > 0 {
+		ssl = c.SSL
 	}
 	dataSource := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%d sslmode=%s", c.UserName, c.Password, c.DbName, c.Host, c.Port, ssl)
 	b = BaseConfig{
