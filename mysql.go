@@ -12,6 +12,8 @@ type MysqlConfig struct {
 	Password  string
 	Host      string
 	Port      int
+	MaxIdle   int
+	MaxConn   int
 	DbName    string
 }
 
@@ -21,10 +23,11 @@ func (c *MysqlConfig) Build() (b BaseConfig) {
 	b = BaseConfig{
 		dataSource: dataSource,
 		aliasName:  c.AliasName,
-		driver: DriverMysql,
+		driver:     DriverMysql,
 		initDb:     c.InitDb,
 	}
 
-	//b.params = append(b.params, c.MaxIdle, c.MaxConn)
+	b.MaxIdle(c.MaxIdle)
+	b.MaxConn(c.MaxConn)
 	return
 }

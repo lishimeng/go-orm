@@ -1,9 +1,13 @@
 package persistence
 
-import "github.com/astaxie/beego/orm"
+import "github.com/beego/beego/v2/client/orm"
 
 type OrmContext struct {
 	Context orm.Ormer
+}
+
+type TxContext struct {
+	Context orm.TxOrmer
 }
 
 func New() *OrmContext {
@@ -12,23 +16,24 @@ func New() *OrmContext {
 	return c
 }
 
-func (o *OrmContext) Transaction(h func(ctx OrmContext) error) (err error) {
+func (o *OrmContext) Transaction(h func(TxContext) error) (err error) {
 
+	var ctx TxContext
 	if h == nil {
 		return
 	}
-	err = o.Context.Begin()
+	ctx.Context, err = o.Context.Begin()
 
 	if err != nil {
 		return
 	}
 
-	err = h(*o)
+	err = h(ctx)
 
 	if err != nil {
-		_ = o.Context.Rollback()
+		_ = ctx.Context.Rollback()
 	} else {
-		err = o.Context.Commit()
+		err = ctx.Context.Commit()
 	}
 
 	return

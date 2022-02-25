@@ -1,10 +1,10 @@
 package persistence
 
 import (
-	"github.com/astaxie/beego/orm"
+	"github.com/beego/beego/v2/client/orm"
 )
 
-//RegisterModel
+// DriverType RegisterModel
 type DriverType orm.DriverType
 
 type Driver struct {
@@ -17,8 +17,20 @@ type BaseConfig struct {
 	aliasName  string
 	driver     Driver
 	dataSource string
-	params     []int
+	params     []orm.DBOption
 	models     []interface{}
+}
+
+func (b *BaseConfig) MaxIdle(n int) {
+	if n > 0 {
+		b.params = append(b.params, orm.MaxIdleConnections(n))
+	}
+}
+
+func (b *BaseConfig) MaxConn(n int) {
+	if n > 0 {
+		b.params = append(b.params, orm.MaxOpenConnections(n))
+	}
 }
 
 var DriverMysql = Driver{"mysql", orm.DRMySQL}
