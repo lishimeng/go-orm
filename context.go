@@ -6,6 +6,12 @@ type OrmContext struct {
 	Context orm.Ormer
 }
 
+func New() *OrmContext {
+	c := new(OrmContext)
+	c.Context = orm.NewOrm()
+	return c
+}
+
 func (o *OrmContext) Transaction(h func(ctx OrmContext) error) (err error) {
 
 	if h == nil {
