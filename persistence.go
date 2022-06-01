@@ -82,6 +82,15 @@ func RegisterDataBase(init bool, aliasName, driverName, dataSource string, param
 	return
 }
 
+func RegisterDatabase(config BaseConfig) (err error) {
+	err = RegisterDataBase(config.initDb,
+		config.aliasName,
+		config.driver.name,
+		config.dataSource,
+		config.params...)
+	return
+}
+
 func RegisterModels(models ...interface{}) {
 	orm.RegisterModel(models...)
 }
