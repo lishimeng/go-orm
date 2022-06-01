@@ -2,7 +2,6 @@ package persistence
 
 import (
 	"fmt"
-	//_ "github.com/lib/pq"
 )
 
 type PostgresConfig struct {

@@ -16,6 +16,12 @@ func New() *OrmContext {
 	return c
 }
 
+func NewOrm(aliasName string) *OrmContext {
+	c := new(OrmContext)
+	c.Context = orm.NewOrmUsingDB(aliasName)
+	return c
+}
+
 func (o *OrmContext) Transaction(h func(TxContext) error) (err error) {
 
 	var ctx TxContext
